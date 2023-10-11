@@ -1,0 +1,1 @@
+from cards.impl.demonic_chant import demonic_chant
