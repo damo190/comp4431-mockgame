@@ -8,16 +8,18 @@ class Game:
     curr_boss: Boss = None
     turn: int = 0
     max_turns: int = 0
+    simulator = None
 
-    def __init__(self, num_players, max_turns) -> None:
+    def __init__(self, num_players, max_turns, simulator) -> None:
         self.players = []
         self.bosses = []
         self.curr_boss = None
         self.turn = 0
         self.max_turns = max_turns
+        self.simulator = simulator
 
         for num in range(num_players):
-            self.players.append(Player(card_catalog, "player" + str(num + 1)))
+            self.players.append(Player(card_catalog, "player" + str(num + 1), max_turns))
         self.bosses.append(Boss())
         self.curr_boss = self.bosses[0]
 

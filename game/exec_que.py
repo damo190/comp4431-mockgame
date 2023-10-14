@@ -10,16 +10,6 @@ def enque_card(card: Card, caster: Entity):
     })
     exec_queue.sort(key=lambda c: c["card"].card_type.value)
 
-def select_target(targets, game: Game):
-    possible_t = game.all_entities()
-
-    print("Please choose who to target: ")
-
-    for (i, entity) in enumerate(possible_t):
-        print(f"\t{i + 1}: {entity.name}")
-    choice = int(input()) - 1
-
-    targets.append(possible_t[choice])
 
 def execute_card(card: Card, game: Game, caster: Entity):
 
@@ -37,7 +27,7 @@ def execute_card(card: Card, game: Game, caster: Entity):
     elif (c_target == CardTarget.ALL):
         targets += game.all_entities()
     elif (c_target == CardTarget.TARGETTED):
-        select_target(targets, game)
+        game.simulator.target_select(targets, game)
         
 
     def calculate_damage(strength, modifier, shield):

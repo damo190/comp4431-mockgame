@@ -3,9 +3,6 @@ Run the following to play:
 
 > python main.py
 
-Game runs for 3 turns which can be expanded by changing the while loop in main()
-
-
 <h2>Modules</h2>
 
  - cards
@@ -19,9 +16,18 @@ Game runs for 3 turns which can be expanded by changing the while loop in main()
      - CHOOSE: Each player silently chooses their card to play
      - BOSS_CHOOSE: The boss chooses a card from their deck at random
      - EXECUTE: The cards are execute via the defined order found in exec_que
+   - [game_obj.py](game/game_obj.py) Defines the game object where all game data is stored
  - [entities.py](entities.py)
    - Various definitions of the objects type of the games and various enums
    - CardType enum ordering is important, as that is how the execution queue orders
  - [main.py](main.py)
    - main file where the game starts
+ - [simulators.py](simulators.py)
+   - The different ways to play the game
+   - Currently implemented simulators:
+     - manual: The regular way to play the game, allows for testing engine code
+     - random: All decisions made are purely random, good for sanity testing average win rate
+       - High WR for players means players are inherently over-powered
+       - Similarly, high WR for boss means players are inherently under-powered
+
 

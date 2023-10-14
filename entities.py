@@ -1,7 +1,6 @@
 from enum import Enum
 import random
 
-STARTING_CARDS = 5
 
 # Card type enums
 # Ordering changes the order in which cards are execute at the execute phase
@@ -84,14 +83,14 @@ class Player(Entity):
 
     def draw_card(self, card_catalog, num) -> None:
         
-        for i in range(num):
+        for _ in range(num):
             card = random.choice(list(card_catalog.keys()))
             self.hand.append(card_catalog[card])
 
-    def __init__(self, card_catalog, name) -> None:
+    def __init__(self, card_catalog, name, num_cards) -> None:
         super().__init__(10, name)
         self.hand = []
-        self.draw_card(card_catalog, STARTING_CARDS)
+        self.draw_card(card_catalog, num_cards)
     
     def __str__(self) -> str:
         ret = f"{self.name}: you currently have {self.health} HP\n"
@@ -102,7 +101,7 @@ class Player(Entity):
     
 class Boss(Entity):
     def __init__(self) -> None:
-        super().__init__(5, "boss")
+        super().__init__(10, "boss")
     
     def __str__(self) -> str:
         ret = f"\nThe Boss {self.name} has {self.health} HP remaining!\n"
