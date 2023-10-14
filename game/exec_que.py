@@ -1,38 +1,43 @@
-from entities import Card, CardTarget, CardType
-exec_queue = []
+from entities import Card, CardTarget, CardType, Entity
+from game import Game
+exec_queue: list[dict] = []
 
 
-def enque_card(card: Card, caster: str):
+def enque_card(card: Card, caster: Entity):
     exec_queue.append({
         "card": card,
         "owner": caster
     })
     exec_queue.sort(key=lambda c: c["card"].card_type.value)
 
-def select_target(targets, game_stats):
+def select_target(targets, game: Game):
+    possible_t = game.all_entities()
+
     print("Please choose who to target: ")
-    for (i, entity) in enumerate(game_stats):
-        print(f"\t{i + 1}: {entity}")
+
+    for (i, entity) in enumerate(possible_t):
+        print(f"\t{i + 1}: {entity.name}")
     choice = int(input()) - 1
-    targets.append(list(game_stats.keys())[choice])
 
-def execute_card(card: Card, game_stats, caster):
+    targets.append(possible_t[choice])
 
-    print(f"{caster} is using {card.card_name}...")
+def execute_card(card: Card, game: Game, caster: Entity):
+
+    print(f"{caster.name} is using {card.card_name}...")
 
     c_target = card.card_target
-    targets = []
+    targets: list[Entity] = []
+
     if (c_target == CardTarget.PLAYERS):
-        targets.append("player")
+        targets += game.players
     elif (c_target == CardTarget.SELF):
         targets.append(caster)
     elif (c_target == CardTarget.ENEMY):
-        targets.append("boss")
+        targets.append(game.curr_boss)
     elif (c_target == CardTarget.ALL):
-        for e in game_stats:
-            targets.append(e)
+        targets += game.all_entities()
     elif (c_target == CardTarget.TARGETTED):
-        select_target(targets, game_stats)
+        select_target(targets, game)
         
 
     def calculate_damage(strength, modifier, shield):
@@ -41,8 +46,7 @@ def execute_card(card: Card, game_stats, caster):
     c_type = card.card_type
     c_str = card.card_strength
 
-    for t in targets:
-        entity = game_stats[t]
+    for entity in targets:
         if (c_type == CardType.DAMAGE):
             entity.health -= calculate_damage(c_str, entity.modifier, entity.shield)
         elif (c_type == CardType.HEAL):
@@ -58,14 +62,13 @@ def execute_card(card: Card, game_stats, caster):
         card.card_special()
 
 
-def execute_queue(game_stats):
+def execute_queue(game: Game):
     global exec_queue
+
     for c in exec_queue:
-        execute_card(c["card"], game_stats, c["owner"])
+        execute_card(c["card"], game, c["owner"])
 
     exec_queue = []
 
-    for e in game_stats:
-        game_stats[e].modifier = 0
-        game_stats[e].shield = 0
+    game.turn_reset()
     
