@@ -22,7 +22,16 @@ def check_end_state(game: Game, curr_state: GameState) -> GameState:
     if all(p.health <= 0 for p in game.players):
         return GameState.BOSS_WON
     if game.curr_boss.health <= 0:
-        return GameState.PLAYERS_WON    
+        return GameState.PLAYERS_WON
+    
+
+    for p in game.players:
+        if p.health <= 0:
+            print(f"{p.name} is dead!")
+    # Remove dead players
+    game.players = list(filter(lambda p: p.health > 0, game.players))
+
+
     return curr_state
 
 def execute_state(game_state, game: Game):

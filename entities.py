@@ -102,7 +102,7 @@ class Player(Entity):
     
 class Boss(Entity):
     def __init__(self) -> None:
-        super().__init__(50, "boss")
+        super().__init__(20, "boss")
     
     def __str__(self) -> str:
         ret = f"\nThe Boss {self.name} has {self.health} HP remaining!\n"

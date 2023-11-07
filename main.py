@@ -10,7 +10,7 @@ Simulator list currently:
     manual - play the game yourself (not recommended for testing balance)
     rand_brain - every move made by both players and bosses is fully random
 '''
-NUM_PLAYERS = 4
+NUM_PLAYERS = 3
 CARDS_IN_HAND = 5
 TOTAL_GAMES = 500
 SIMULATOR = rand_brain
