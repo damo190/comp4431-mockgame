@@ -19,19 +19,42 @@ def manual_play():
     play(Game(2, 5, manual))
 
 
-def standard_test():
+def standard_test(debug = False):
     win_count = 0
-    for _ in range(TOTAL_GAMES):
-        if play(Game(NUM_PLAYERS, CARDS_IN_HAND, SIMULATOR)):
+    loss_count = 0
+    test_time = datetime.now()
+
+    win_turns = 0
+    lose_turns = 0
+    total_bosses_beaten = 0
+    f = open("results/results-" + test_time.strftime("%H-%M-%S") + ".txt", 'x')   
+
+    for i in range(TOTAL_GAMES):
+        (victory, total_turns, bosses_bested) = play(Game(NUM_PLAYERS, CARDS_IN_HAND, SIMULATOR))
+        total_bosses_beaten += bosses_bested
+        if victory:
             win_count += 1
+            if debug:
+                f.write(f"\tAttempt {i + 1} Won: Beat {bosses_bested} bosses in {total_turns} turns\n")
+            win_turns += total_turns
+        else:
+            if debug:
+                f.write(f"\tAttempt {i + 1} Lost: Beat {bosses_bested} bosses in {total_turns} turns\n")
+            lose_turns += total_turns
+            loss_count += 1
+        
 
     '''
     Write statistics to results file in results/
     '''
-    test_time = datetime.now()
-    with open("results/results-" + test_time.strftime("%H-%M-%S") + ".txt", 'x') as f:
-        f.write(f"From {TOTAL_GAMES} games, the players won {win_count} times\n")
-        f.write(f"Total Winrate: {win_count / TOTAL_GAMES * 100}%")
+    f.write(f"From {TOTAL_GAMES} games, the players won {win_count} times\n")
+    f.write(f"Total Winrate: {win_count / TOTAL_GAMES * 100}%\n")
+    f.write(f"On average wins took {win_turns / win_count} turns\n")
+    f.write(f"On average losses took {lose_turns / loss_count} turns\n")
+    f.write(f"The average game lasted {(win_turns + lose_turns) / TOTAL_GAMES} turns\n")
+    f.write(f"On average the players bested {total_bosses_beaten / TOTAL_GAMES} bosses\n")
+
+    f.close()
 
 def alter_cards(min_cards, max_cards):
     card_wins = {}

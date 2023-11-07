@@ -1,10 +1,14 @@
 from entities import Player, Boss, Entity, Card, CardType, CardTarget
 from cards.card_list import create_deck
+from boss.scarecrow import Scarecrow
+from boss.deranged_cow import DerangedCow
+from boss.innocent_lamb import InnocentLamb
+from boss.phat_piggy import PhatPiggy
 
 
 class Game:
     players: list[Player] = []
-    bosses: Boss = []
+    bosses: list[Boss] = []
     deck: list[Card] = []
     exec_queue: list[dict] = []
     holiday: list[Player] = []
@@ -17,6 +21,7 @@ class Game:
         self.players = []
         self.bosses = []
         self.exec_queue = []
+        self.total_bosses = 4
         self.curr_boss = None
         self.turn = 0
         self.max_turns = max_turns
@@ -24,8 +29,8 @@ class Game:
         self.deck = create_deck()
         for num in range(num_players):
             self.players.append(Player(self.deck, "player" + str(num + 1), max_turns))
-        self.bosses.append(Boss())
-        self.curr_boss = self.bosses[0]
+        self.bosses = [Scarecrow(), DerangedCow(), InnocentLamb(), PhatPiggy()]
+        self.curr_boss = self.bosses.pop(0)
 
     def __str__(self) -> str:
         ret = "Game State: \n"
@@ -124,6 +129,4 @@ class Game:
             self.execute_card(c["card"], c["owner"])
 
         self.exec_queue = []
-
-        self.turn_reset()
 

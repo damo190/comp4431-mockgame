@@ -101,8 +101,11 @@ class Player(Entity):
         return ret
     
 class Boss(Entity):
-    def __init__(self) -> None:
-        super().__init__(20, "boss")
+    passive_effect = None
+
+    def __init__(self, health, name) -> None:
+        super().__init__(health, name)
+        self.passive_effect = None
     
     def __str__(self) -> str:
         ret = f"\nThe Boss {self.name} has {self.health} HP remaining!\n"
