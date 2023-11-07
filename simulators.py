@@ -1,6 +1,5 @@
 from entities import Player
 from game.game_obj import Game
-from game.exec_que import enque_card
 import random
 
 class Simulator:
@@ -16,7 +15,7 @@ def manual_choose_stage(player: Player, game: Game):
     # No error checking for now
     choice = int(input())
     chosen_card = player.hand[choice - 1]
-    enque_card(chosen_card, player)
+    game.enque_card(chosen_card, player)
     del player.hand[choice - 1]
 
 
@@ -25,7 +24,7 @@ def random_choose_stage(player: Player, game: Game):
     choice = random.randint(1, len(player.hand))
     chosen_card = player.hand[choice - 1]
     print(f"{player.name} Randomly chose:\n {chosen_card}")
-    enque_card(chosen_card, player)
+    game.enque_card(chosen_card, player)
     del player.hand[choice - 1]
 
 def manual_select_target(targets, game: Game):

@@ -11,9 +11,12 @@ Simulator list currently:
     rand_brain - every move made by both players and bosses is fully random
 '''
 NUM_PLAYERS = 4
-CARDS_IN_HAND = 3
+CARDS_IN_HAND = 5
 TOTAL_GAMES = 500
 SIMULATOR = rand_brain
+
+def manual_play():
+    play(Game(2, 5, manual))
 
 
 def standard_test():
@@ -63,6 +66,8 @@ def alter_players(min_players, max_players):
 
 def main():
     standard_test()
-    alter_cards(2, 10)
-    alter_players(2, 6)
+    # alter_cards(2, 10)
+    # alter_players(2, 6)
+
+    # manual_play()
 main()

@@ -81,16 +81,17 @@ class Entity:
 class Player(Entity):
     hand = []
 
-    def draw_card(self, card_catalog, num) -> None:
+    def draw_card(self, deck, num) -> None:
         
         for _ in range(num):
-            card = random.choice(list(card_catalog.keys()))
-            self.hand.append(card_catalog[card])
+            random.shuffle(deck)
+            card = deck.pop(0)
+            self.hand.append(card)
 
-    def __init__(self, card_catalog, name, num_cards) -> None:
+    def __init__(self, deck, name, num_cards) -> None:
         super().__init__(10, name)
         self.hand = []
-        self.draw_card(card_catalog, num_cards)
+        self.draw_card(deck, num_cards)
     
     def __str__(self) -> str:
         ret = f"{self.name}: you currently have {self.health} HP\n"
@@ -101,7 +102,7 @@ class Player(Entity):
     
 class Boss(Entity):
     def __init__(self) -> None:
-        super().__init__(10, "boss")
+        super().__init__(50, "boss")
     
     def __str__(self) -> str:
         ret = f"\nThe Boss {self.name} has {self.health} HP remaining!\n"
