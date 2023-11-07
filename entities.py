@@ -79,7 +79,7 @@ class Entity:
         self.shield = 0
     
 class Player(Entity):
-    hand = []
+    hand: list[Card] = []
 
     def draw_card(self, deck, num) -> None:
         

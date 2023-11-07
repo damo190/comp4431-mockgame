@@ -96,7 +96,7 @@ class Game:
         elif (c_target == CardTarget.ALL):
             targets += self.all_entities()
         elif (c_target == CardTarget.TARGETTED):
-            self.simulator.target_select(targets, self)
+            self.simulator.target_select(card, targets, self)
         
         # Remove any targets currently on a holiday
         targets = list(filter(lambda t: t not in self.holiday, targets))

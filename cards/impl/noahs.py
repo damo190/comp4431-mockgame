@@ -2,7 +2,7 @@ from entities import Card, CardTarget, CardType
 
 def noahs(card, game, caster):
     target = []
-    game.simulator.target_select(target, game)
+    game.simulator.target_select(card, target, game)
     chosen_target = target[0]
     
     for (i, e) in enumerate(game.exec_queue):

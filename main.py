@@ -1,6 +1,6 @@
 from game import Game
 from game.state import play
-from simulators import manual, rand_brain
+from simulators import manual, rand_brain, power_players
 from datetime import datetime
 
 ''' 
@@ -19,7 +19,7 @@ def manual_play():
     play(Game(2, 5, manual))
 
 
-def standard_test(debug = False):
+def standard_test(debug = False, sim = SIMULATOR):
     win_count = 0
     loss_count = 0
     test_time = datetime.now()
@@ -27,10 +27,18 @@ def standard_test(debug = False):
     win_turns = 0
     lose_turns = 0
     total_bosses_beaten = 0
-    f = open("results/results-" + test_time.strftime("%H-%M-%S") + ".txt", 'x')   
+
+    boss_losses =  {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0
+    }
+
+    f = open("results/results-" + sim.name + "-" + test_time.strftime("%H-%M-%S") + ".txt", 'x')   
 
     for i in range(TOTAL_GAMES):
-        (victory, total_turns, bosses_bested) = play(Game(NUM_PLAYERS, CARDS_IN_HAND, SIMULATOR))
+        (victory, total_turns, bosses_bested) = play(Game(NUM_PLAYERS, CARDS_IN_HAND, sim))
         total_bosses_beaten += bosses_bested
         if victory:
             win_count += 1
@@ -42,6 +50,7 @@ def standard_test(debug = False):
                 f.write(f"\tAttempt {i + 1} Lost: Beat {bosses_bested} bosses in {total_turns} turns\n")
             lose_turns += total_turns
             loss_count += 1
+            boss_losses[bosses_bested] += 1
         
 
     '''
@@ -53,6 +62,7 @@ def standard_test(debug = False):
     f.write(f"On average losses took {lose_turns / loss_count} turns\n")
     f.write(f"The average game lasted {(win_turns + lose_turns) / TOTAL_GAMES} turns\n")
     f.write(f"On average the players bested {total_bosses_beaten / TOTAL_GAMES} bosses\n")
+    f.write(f"Boss loss matrix: {boss_losses}\n")
 
     f.close()
 
@@ -88,7 +98,8 @@ def alter_players(min_players, max_players):
     
 
 def main():
-    standard_test()
+    standard_test(True, power_players)
+    # standard_test(False, rand_brain)
     # alter_cards(2, 10)
     # alter_players(2, 6)
 
