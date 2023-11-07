@@ -49,7 +49,7 @@ def execute_card(card: Card, game: Game, caster: Entity):
             entity.shield += c_str
 
     if card.card_special is not None:
-        card.card_special()
+        card.card_special(card, game_stats)
 
 
 def execute_queue(game: Game):
